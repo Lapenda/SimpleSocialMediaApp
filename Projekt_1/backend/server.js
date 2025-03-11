@@ -11,7 +11,7 @@ app.use(cors({
 
 app.use(express.json());
 
-const uri = 'mongodb+srv://bornalapenda12:gIn28idHiHk4y40l@cluster0.heorg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+const uri = '';
 const client = new MongoClient(uri);
 
 app.get('/', (req, res) => {
