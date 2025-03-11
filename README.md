@@ -10,7 +10,7 @@ View a graph displaying the number of registered users and posts published per d
 Add or remove admin roles for any user.
 Permanently delete any user’s account.
 
-Key Features
+# Key Features
 
 Messaging System: Implemented a messaging feature with a "seen" functionality, allowing the sender to see when their message has been read by the recipient. In the conversation view, outgoing messages appear on the right with a blue background, while incoming messages are on the left with a white background.
 
@@ -18,6 +18,6 @@ Search Functionality: Includes a search bar that filters all users via a custom 
 
 User Profiles: Any user’s profile can be viewed if they have published posts.
 
-Technical Details
+# Technical Details
 
 Database: The application uses MongoDB Atlas as an online database. No database export is provided since it’s hosted online, and access is enabled from all IP addresses.
