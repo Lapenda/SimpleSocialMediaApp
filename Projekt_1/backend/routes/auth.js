@@ -10,7 +10,7 @@ module.exports = (usersCollection) => {
   router.post('/register', async (req, res) => {
     try {
       if (!req.body.name || req.body.name.length < 3) {
-        return res.status(400).send({ message: 'Name is required and must be at least 3 characters long.' });
+        return res.status(400).send({ message: 'Name is required and must be at least 3 characters long. ' });
       }
   
       if (!req.body.username || req.body.username.length < 4) {
