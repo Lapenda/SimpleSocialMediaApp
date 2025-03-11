@@ -1,7 +1,7 @@
 # SimpleSocialNetworkApp
 A simple social network app made with Angular, Node.js/Express.js and MongoDB Atlas database
 
-Project Description
+# Project Description
 
 This is a simple social networking application where users can create posts, comment on them, and like them. Each author has the ability to edit or delete their own profile, posts, or comments. The application also includes an admin role with extended privileges: admins can edit or delete any user's comment and have access to an Admin Panel page. 
 In the Admin Panel, admins can:
