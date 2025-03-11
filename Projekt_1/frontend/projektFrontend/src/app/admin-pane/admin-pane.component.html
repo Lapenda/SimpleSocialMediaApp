@@ -1,0 +1,40 @@
+<main>
+  <nav>
+    <button (click)="returnToHome()">Back to Home</button>
+    <input [(ngModel)]="searchTerm" placeholder="Search users">
+  </nav>
+
+  <div id="content">
+    <section>
+      <h2>User Management</h2>
+      <div *ngIf="users && users.length > 0; else noUsers">
+        <ul>
+          <li *ngFor="let user of users | search: searchTerm | slice: 0:5">
+            {{ user.username }} - {{ user.name }} 
+            <button (click)="onUserSelect(user)">Select</button>
+          </li>
+        </ul>
+      </div>
+      <ng-template #noUsers>No users found.</ng-template>
+  
+      <div *ngIf="selectedUser">
+        <h3>User Actions for {{ selectedUser.username }}</h3>
+        <button (click)="deleteUser(selectedUser)">Delete User</button>
+        <button (click)="toggleAdminRole(selectedUser)">{{ selectedUser.role ? 'Remove Admin Role' : 'Make Admin' }}</button>
+      </div>
+    </section>
+  
+    <section>
+      <h2>Statistics</h2>
+      <div id="charts">
+        <canvas id="registrationChart"></canvas>
+        
+        <canvas id="postsChart"></canvas>
+      </div>
+     </section>
+    
+    <footer>
+      <h3>Copyright: {{ getUserFromLocalStorage()?.username }}</h3>
+    </footer>
+  </div>
+</main>

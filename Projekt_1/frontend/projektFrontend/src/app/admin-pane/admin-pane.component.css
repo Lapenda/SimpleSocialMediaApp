@@ -1,0 +1,132 @@
+main{
+    margin: 0 auto;
+    margin-bottom: 75px;
+    font-family: Arial, sans-serif;
+}
+
+#content{
+    margin: 20px;
+}
+
+canvas {
+    margin: 20px 0;
+    border-radius: 15px;
+    border: 1px solid black;
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+}
+
+#charts {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+#registrationChart{
+    background-color: lightgoldenrodyellow;
+}
+
+#postsChart{
+    
+    background-color: lightsteelblue;
+}
+  
+nav {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background-color: #1DA1F2;
+    padding: 10px 20px;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+    border-radius: 15px;
+  }
+  
+nav button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 8px 15px;
+    transition: background-color 0.6s;
+    margin: 0 5px;
+}
+  
+nav button:hover {
+    background-color: #0056b3;
+}
+  
+nav input {
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 15px;
+    width: 30%;
+}
+  
+section {
+    margin-bottom: 20px;
+}
+  
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+  
+li {
+    background-color: white;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+  
+li button {
+    padding: 5px 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+  
+li button:hover {
+    background-color: #218838;
+}
+  
+button {
+    padding: 10px 20px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+  
+  button:hover {
+    background-color: #c82333;
+}
+
+ 
+footer {
+    width: 97%;
+    background-color: #333;
+    color: white;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    position: fixed;
+    bottom: 0;
+    margin-bottom: 10px;
+
+}

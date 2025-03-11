@@ -1,0 +1,52 @@
+<body>
+  <div class="register-container">
+    <h2>Register</h2>
+    <form [formGroup]="registerForm" (submit)="register()">
+      <label for="name">Name:</label>
+      <input id="name" type="text" placeholder="Name" class="form-control" formControlName="name" />
+      <div *ngIf="f['name'].touched && f['name'].invalid" class="error">
+        <p *ngIf="f['name'].errors?.['required']">Name is required.</p>
+        <p *ngIf="f['name'].errors?.['minlength']">Name must be at least 3 characters long.</p>
+      </div>
+
+      <label for="email">E-mail:</label>
+      <input id="email" type="email" placeholder="E-mail" class="form-control" formControlName="email" />
+      <div *ngIf="f['email'].touched && f['email'].invalid" class="error">
+        <p *ngIf="f['email'].errors?.['required']">E-mail is required.</p>
+        <p *ngIf="f['email'].errors?.['email']">Please enter a valid e-mail address.</p>
+      </div>
+
+      <label for="username">Username:</label>
+      <input id="username" type="text" placeholder="Username" class="form-control" formControlName="username" />
+      <div *ngIf="f['username'].touched && f['username'].invalid" class="error">
+        <p *ngIf="f['username'].errors?.['required']">Username is required.</p>
+        <p *ngIf="f['username'].errors?.['minlength']">Username must be at least 4 characters long.</p>
+      </div>
+
+      <label for="password">Password:</label>
+      <input id="password" type="password" placeholder="Password" class="form-control" formControlName="password" />
+      <div *ngIf="f['password'].touched && f['password'].invalid" class="error">
+        <p *ngIf="f['password'].errors?.['required']">Password is required.</p>
+        <p *ngIf="f['password'].errors?.['minlength']">Password must be at least 6 characters long.</p>
+      </div>
+
+      <label for="password_repeated">Repeat Password:</label>
+      <input id="password_repeated" type="password" placeholder="Repeat password" class="form-control" formControlName="password_repeated" />
+      <div *ngIf="f['password_repeated'].touched && f['password_repeated'].invalid" class="error">
+        <p *ngIf="f['password_repeated'].errors?.['required']">Please repeat the password.</p>
+      </div>
+
+      <div id="roleDiv">
+        <label for="role">Are you an admin?</label>
+        <input id="role" type="checkbox" formControlName="role" />
+      </div>
+
+      <button type="submit" class="btn-submit">Register</button>
+    </form>
+
+    <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+
+    <br>
+    <a [routerLink]="['/login']" class="register-link">Back to login form</a>
+  </div>
+</body>

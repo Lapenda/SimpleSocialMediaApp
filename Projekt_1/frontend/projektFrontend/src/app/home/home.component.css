@@ -1,0 +1,318 @@
+
+main {
+  margin: 0 auto;
+  margin-bottom: 75px;
+  font-family: Arial, sans-serif;
+}
+
+nav {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1DA1F2;
+    padding: 10px 20px;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+    border-radius: 15px;
+  }
+  
+  #left_nav_div, #right_nav_div {
+    display: flex;
+    align-items: center;
+  }
+  
+  #left_nav_div {
+    width: 70%;
+  }
+  
+  #right_nav_div {
+    width: 30%;
+    justify-content: flex-end;
+  }
+  
+  nav div button {
+    background-color: #0C85D0;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 15px;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: background-color 0.6s;
+    margin: 0 5px;
+  }
+  
+  nav div button:hover {
+    background-color: #0056b3;
+  }
+  
+  #profile_btn {
+    width: auto;
+  }
+  
+  .logout_btn {
+    background-color: #e0245e;
+  }
+
+  .logout_btn:hover {
+    background-color: #c2185b;
+  }	
+  
+  
+  input[type="text"] {
+    padding: 8px;
+    border-radius: 15px;
+    border: 1px solid black;
+    width: 50%;
+    margin-right: 2px;
+    margin-left: 2px;
+  }
+  
+  #content {
+    margin: 20px;
+    display: flex;
+    justify-content: space-between;
+    min-height: 80vh;
+  }
+  
+  #left_content_div, #right_content_div {
+    width: 17%;
+    background-color: #f1f3f4; 
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  #center_content_div {
+    width: 55%;
+    background-color: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .post {
+    border: 1px solid #e1e8ed;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #f8f9fa; 
+  }
+  
+  .post p {
+    margin: 5px 0;
+  }
+  
+  textarea {
+    width: 100%;
+    border: 1px solid #e1e8ed;
+    border-radius: 15px;
+    padding: 10px;
+    font-size: 1em;
+    resize: none;
+    box-sizing: border-box;
+  }
+  
+  button {
+    background-color: #1DA1F2;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin: 5px;
+    margin-left: 2px;
+    transition: background-color 0.3s;
+  }
+  
+  button:hover {
+    background-color: #0C85D0;
+  }
+  
+  .liked {
+    background-color: #e0245e;
+    color: white;
+  }
+
+  .delete_post_btn{
+    background-color: #e0245e;
+    color: white;
+  }
+
+  .delete_post_btn:hover{
+    background-color: #c2185b;
+
+  }
+
+  
+  .not-liked {
+    background-color: transparent;
+    color: #1DA1F2;
+    border: 1px solid #1DA1F2;
+  }
+  
+  .liked:hover {
+    background-color: #c2185b;
+  }
+  
+  .not-liked:hover {
+    background-color: #e8f5fe;
+    color: #0c85d0;
+  }
+  
+  #add_post_div {
+    width: 100%;
+  }
+  
+  #add_post_textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 15px;
+    border: 1px solid black;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+  }
+  
+  footer {
+    width: 99%;
+    background-color: #333;
+    color: white;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    position: fixed;
+    bottom: 0;
+    margin-bottom: 10px;
+  }
+  
+  #add_post_btn {
+    background-color: white;
+    color: black;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  #add_post_btn:hover {
+    background-color: black;
+    color: white;
+  }
+
+
+#right_content_div {
+    width: 20%;
+    padding: 20px;
+    border: 1px solid #e1e8ed;
+    border-radius: 15px;
+    background-color: #f8f9fa;
+  }
+  
+  .friend-info {
+    cursor: pointer;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #e1e8ed;
+    border-radius: 15px;
+    background-color: white;
+    transition: background-color 0.3s;
+  }
+  
+  .friend-info:hover {
+    background-color: #e8f5fe;
+  }
+
+  /*Searching users*/
+  .dropdown {
+    position: relative;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    background-color: white;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    margin-top: 5px;
+  }
+  
+  .dropdown ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .dropdown li {
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .dropdown li:hover {
+    background-color: #f1f1f1;
+  }
+
+  .no-results{
+    margin-top: 5px;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    border: 0.2px solid red;
+  }
+
+  .commentUsername{
+    color: #1DA1F2;
+    font-weight: bold;
+  }
+
+  .post-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .postUsername{
+    font-weight: bold;
+    color: #1DA1F2;
+  }
+
+  .postTimestamp{
+    color: #657786;
+    font-size: 0.9em;
+  }
+
+  .editPost{
+    background-color: gray;
+  }
+
+  .editPost:hover{
+    background-color: #333;
+  }
+
+  .postActions{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .commentActions{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .repliesDiv{
+    margin-left: 40px;
+  }
+
+  #admin_pane_btn{
+    background-color: black;
+    color: white;
+  }
+
+  #admin_pane_btn:hover{
+    background-color: #333;
+  }

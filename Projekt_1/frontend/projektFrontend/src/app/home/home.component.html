@@ -1,0 +1,166 @@
+<main>
+    <nav>
+        <div id="left_nav_div">
+            <button id="profile_btn" (click)="goToProfile()" type="button">
+                {{ profileViewEnabled ? 'Home' : 'Profile'}}
+            </button>
+            <input type="text"
+            placeholder="Search users"
+            [(ngModel)]="searchTerm"
+            title="search"
+            name="search">
+            <button id="add_post_btn" (click)="addPost()" type="button"> {{ showAddPostDiv ? 'Cancel Adding Post' : 'Add Post' }} </button>
+            <button id="admin_pane_btn" (click)="goToAdminPane()" type="button" *ngIf="isAdminLoggedIn">Admin Pane</button>
+        </div>
+        <div id="right_nav_div">
+            <button id="inbox_btn" (click)="goToInbox()" type="button">Inbox</button>
+            <button class="logout_btn" type="button" (click)="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <div *ngIf="searchTerm" class="search-results">
+        <div *ngIf="users.length > 0 && searchTerm && (users | search: searchTerm).length > 0; else noUsers" class="dropdown">
+            <ul>
+                <li
+                    *ngFor="let user of (users | search: searchTerm) ?? []"
+                    (click)="onFriendClick(user)"
+                    >
+                    {{ user.username }} - {{ user.name }}
+                </li>
+            </ul>
+        </div>
+        <ng-template #noUsers>
+            <div class="no-results">No users found.</div>
+        </ng-template>
+
+        <button type="button" (click)="clearSearchTerm()"> Close </button>
+    </div>
+
+    <div id="content">
+        <div id="left_content_div" *ngIf="getUserFromLocalStorage() as user">
+          <h2>User Profile</h2>
+            <p><strong>Username:</strong> {{ user.username }}</p>
+            <p *ngIf="!showEditProfile"><strong>Name:</strong> {{user.name}} </p>
+            <p *ngIf="!showEditProfile"><strong>Email:</strong> {{ user.email }}</p>
+            
+            <strong *ngIf="showEditProfile">Name:</strong><input *ngIf="showEditProfile" type="text" [(ngModel)]="editedName" placeholder="Name"><br *ngIf="showEditProfile"><br *ngIf="showEditProfile">
+            <strong *ngIf="showEditProfile">Email:</strong><input *ngIf="showEditProfile" type="text" [(ngModel)]="editedEmail" placeholder="Email"><br *ngIf="showEditProfile"><br *ngIf="showEditProfile">
+
+            <button class="editPost" (click)="toggleEditUser(user)">{{ showEditProfile ? 'Cancel' : 'Edit' }}</button>
+            <button *ngIf="showEditProfile" (click)="updateUser(user)">Save</button>
+
+            <br>
+            <hr>
+            <button class="logout_btn" type="button" (click)="deleteAccount(user)">Delete Account</button>
+        </div>
+
+        <div id="center_content_div">
+            <h2>{{ profileViewEnabled ? 'My posts' : (selectedFriendUsername ? selectedFriendUsername + '\'s posts' : 'Posts') }}</h2>
+            <button *ngIf="selectedFriendUsername" (click)="returnToTheHomePage()">Return</button>
+
+            <div *ngIf="!showAddPostDiv">
+                <div *ngFor="let post of posts" class="post">
+                    <div class="post-header">
+                        <p class="postUsername">{{ post.username }}</p>
+                        <p class="postTimestamp">{{ post.timestamp | date:'medium' }}</p>
+                    </div>
+                    <hr>
+
+                    <p *ngIf="!post.isEditing">{{post.content}}</p>
+                    <textarea class="editPostTextarea" title="postNewContent" *ngIf="post.isEditing" [(ngModel)]="post.newContent" rows="3"></textarea>
+                    <button *ngIf="post.isEditing && checkIfUserIsAuthorOfPost(post)" (click)="editPost(post, post.newContent || '')">Save</button>
+                    
+                    <hr>
+                    <p>Likes: {{ post.likes?.length || 0 }}</p>
+
+                    <div class="postActions">
+
+                        <div>
+                            <ng-container class="postLikesContainer" *ngIf="getUserFromLocalStorage() as user">
+                                <button (click)="toggleLike(post)" 
+                                type="button" 
+                                [ngClass]="{
+                                    'liked': likeStatus[post.postID]?.[user.username],
+                                    'not-liked': !likeStatus[post.postID]?.[user.username]
+                                }">
+                                    {{ likeStatus[post.postID]?.[user.username] ? 'Unlike' : 'Like' }}
+                                </button>
+                            </ng-container>
+                    
+                            <button (click)="toggleSeeComments(post)">Comments</button>
+                        </div>
+                        <div>
+                            <button *ngIf="checkIfUserIsAuthorOfPost(post)" (click)="deletePost(post)" type="button" class = "delete_post_btn">Delete Post</button>
+                            <button class="editPost" *ngIf="checkIfUserIsAuthorOfPost(post)" (click)="toggleEditPost(post)">{{ post.isEditing ? "Cancel" : "Edit post" }}</button>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    <div *ngIf="post.showComments">
+                        <p>Comments:</p>
+                        <input #commentInput type="text" placeholder="Add a comment" [(ngModel)]="commentContent">
+                        <button (click)="commentPost(post, commentInput.value)" type="button">Comment</button>
+                        <div *ngFor="let commentId of post.comments">
+                            <hr>
+                            <p *ngIf="commentsMap[commentId]" class="commentUsername">by {{ commentsMap[commentId].username }}</p>
+                            <p *ngIf="commentsMap[commentId] && !commentsMap[commentId]?.isEditing">{{ commentsMap[commentId].content }}</p>
+                            <textarea *ngIf="commentsMap[commentId]?.isEditing" title="commentNewContent" [(ngModel)]="commentsMap[commentId].newContent" rows="2"></textarea>
+                            <div class="commentActions">
+                                <div>
+                                    <button type="button" (click)="toggleReplyDiv(commentId)"> {{ commentsMap[commentId].showReplyDiv ? 'Cancel' : 'Reply' }} </button>
+                                    <button type="button" class="editPost" (click)="toggleSeeReplies(commentId)"> {{ commentsMap[commentId].showReplies ? 'Return' : 'See replies' }} </button>
+                                </div>
+                                
+                                <div>
+                                    <button  class="delete_post_btn" *ngIf="checkIfUserIsAuthorOfComment(this.commentsMap[commentId])" (click)="deleteComment(post, commentId)">Delete Comment</button>
+                                    <button class="editPost" *ngIf="checkIfUserIsAuthorOfComment(this.commentsMap[commentId])" (click)="toggleEditComment(post, commentId)">{{ commentsMap[commentId].isEditing ? 'Cancel Editing' : 'Edit Comment' }}</button>
+                                    <button *ngIf="commentsMap[commentId]?.isEditing && checkIfUserIsAuthorOfComment(this.commentsMap[commentId])" (click)="editComment(post, commentId, commentsMap[commentId].newContent || '')">Save Comment</button>
+                                </div>
+                            </div>
+
+                            <div *ngIf="commentsMap[commentId].showReplyDiv">
+                                <input type="text" placeholder="Reply to comment" [(ngModel)]="replyContent">
+                                <button (click)="replyToComment(commentId, replyContent)" type="button">Post</button>
+                            </div>
+
+                            <div *ngIf="commentsMap[commentId].showReplies" class="repliesDiv">
+                                <div *ngFor="let reply of commentsMap[commentId].comments">
+                                    <hr>
+                                    <p *ngIf="commentsMap[reply._id]" class="commentUsername">by {{ commentsMap[reply._id].username }}</p>
+                                    <p *ngIf="commentsMap[reply._id] && !commentsMap[reply._id]?.isEditing">{{ commentsMap[reply._id].content }}</p>   
+                                    <textarea *ngIf="commentsMap[reply._id]?.isEditing" title="replyNewContent" [(ngModel)]="commentsMap[reply._id].newContent" rows="2"></textarea>
+                                    <div class="commentActions">
+                                         <div>
+                                            <button  class="delete_post_btn" *ngIf="checkIfUserIsAuthorOfComment(this.commentsMap[reply._id])" (click)="deleteComment(post, reply._id)">Delete Comment</button>
+                                            <button class="editPost" *ngIf="checkIfUserIsAuthorOfComment(this.commentsMap[reply._id])" (click)="toggleEditComment(post, reply._id)">{{ commentsMap[reply._id].isEditing ? 'Cancel Editing' : 'Edit Comment' }}</button>
+                                            <button *ngIf="commentsMap[reply._id]?.isEditing && checkIfUserIsAuthorOfComment(this.commentsMap[reply._id])" (click)="editComment(post, reply._id, commentsMap[reply._id].newContent || '')">Save Comment</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="add_post_div" *ngIf="showAddPostDiv">
+                <textarea id="add_post_textarea" placeholder="Write something..." [(ngModel)]="newPostContent" rows="20"></textarea>
+                <br><br>
+                <button id="finish_add_post_btn" (click)="finishAddingPost()" type="button">Finish</button>
+            </div>
+        </div>
+
+        <div id="right_content_div">
+          <h3>Interesting users</h3>
+          <div *ngFor="let friend of users | slice: 0:10" (click)="onFriendClick(friend)" class="friend-info">
+            <p><strong>Username:</strong> {{ friend.username }}</p>
+            <p><strong>Name:</strong> {{ friend.name }}</p>
+          </div>
+        </div>
+    </div>
+
+    <footer>
+        <h3>Copyright: {{ getUserFromLocalStorage()?.username }}</h3>
+    </footer>
+</main>

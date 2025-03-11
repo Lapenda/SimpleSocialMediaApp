@@ -1,0 +1,97 @@
+  <main>
+
+    <div id="content">
+      <div id="left_content_div" *ngIf="getUserFromLocalStorage() as user">
+        <h2>User Profile</h2>
+        <p><strong>Username:</strong> {{ user.username }}</p>
+        <p><strong>Name:</strong> {{ user.name }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+      </div>
+  
+      <div id="center_content_div"  [class.full-width]="conversations.length === 0">
+        <div class="search-container">
+          <input type="text" [(ngModel)]="searchTerm" placeholder="Search conversations" class="search-input"/>
+        </div>
+
+        <div *ngIf="searchTerm" class="search-results">
+
+          <div *ngIf="users.length > 0 && searchTerm && (users | search: searchTerm).length > 0; else noConversations" class="dropdown">
+            <ul>
+              <li
+                *ngFor="let user of (users | search: searchTerm)"
+                (click)="fetchMessages(getUserFromLocalStorage().username, user.username)"
+              >
+                {{ user.username }}
+              </li>
+            </ul>
+          </div>
+          
+          <ng-template #noConversations >
+            <div class="no-results">No users found.</div>
+          </ng-template>
+
+          <button type="button" (click)="clearSearchTerm()"> Close </button>
+        </div>
+
+        <div class="inboxHeader">
+          <h2>Inbox</h2>
+          <button (click)="returnToHomePage()" type="button">Return to Home</button>
+        </div>
+       
+  
+        <!-- Ako nema razgovora s nijednim korisnikom -->
+        <div *ngIf="conversations.length === 0 && !selectedConversation; else conversationList">
+          <h3>No conversations yet. Start a new one:</h3>
+          <div *ngFor="let friend of users" (click)="startNewConversation(friend.username)" class="friend-info">
+            <p><strong>Username:</strong> {{ friend.username }}</p>
+            <p><strong>Name:</strong> {{ friend.name }}</p>
+          </div>
+        </div>
+  
+        <ng-template #conversationList>
+          <ul *ngIf="!selectedConversation">
+            <li *ngFor="let conversation of conversations | orderByLastMessage: 'desc'" 
+                (click)="fetchMessages(getUserFromLocalStorage().username, conversation.user)"
+                [ngClass]="{'seen': conversation.lastMessage.seen, 'unseen': !conversation.lastMessage.seen}"
+                >
+              <div class="conversation-item" >
+                  <h3> {{ conversation.user }} </h3>
+                  <p> {{ conversation.lastMessage.from }}: {{ conversation.lastMessage.content | slice:0:50 }}{{ conversation.lastMessage.content.length > 50 ? '...' : '' }} </p>
+                  <small> {{ conversation.lastMessage.timestamp | date:'medium' }} </small>
+                  <small> {{ conversation.lastMessage.seen ? '✔️✔️' : '✔️' }} </small>
+            </div>
+            </li>
+          </ul>
+        </ng-template>
+  
+        <!-- View razgovora -->
+        <div *ngIf="selectedConversation">
+          <h3>Conversation with {{ selectedConversation }}</h3>
+          <div class="messages">
+            <div *ngFor="let message of messages" [ngClass]="{'from-me': message.from === getUserFromLocalStorage().username}">
+              <p>{{ message.content }}</p>
+              <small>{{ message.from }} - {{ message.timestamp | date:'medium' }}</small>
+            </div>
+            <p *ngIf="messages.length === 0">Send your first message here:</p>
+          </div>
+          <div class="message-input">
+            <input [(ngModel)]="newMessageContent" placeholder="Type your message here" />
+            <button (click)="sendMessage(selectedConversation, newMessageContent)">Send</button>
+            <button id="back_to_inb_btn" (click)="selectedConversation = ''; fetchConversations()">Back to Inbox</button>
+          </div>
+        </div>
+      </div>
+  
+      <div id="right_content_div" *ngIf="conversations.length !== 0" [class.dissapear]="conversations.length === 0">
+        <h3>Interesting users</h3>
+        <div *ngFor="let friend of users | slice: 0:10" (click)="fetchMessages(getUserFromLocalStorage().username, friend.username)" class="friend-info">
+          <p><strong>Username:</strong> {{ friend.username }}</p>
+          <p><strong>Name:</strong> {{ friend.name }}</p>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <h3>Copyright: {{ getUserFromLocalStorage()?.username }}</h3>
+    </footer>
+  </main>
