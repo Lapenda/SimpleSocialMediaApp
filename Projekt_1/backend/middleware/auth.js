@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
   if (authHeader && authHeader.startsWith('Bearer ')) {
     const token = authHeader.split(' ')[1];
     
-    jwt.verify(token, 'qwert12345zuio67890p', (err, decoded) => {
+    jwt.verify(token, '', (err, decoded) => {
       if (err) {
         console.error('Token verification error:', err);
         return res.status(403).json({ message: 'Token is not valid' });
