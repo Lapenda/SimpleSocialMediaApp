@@ -15,7 +15,7 @@ const uri = '';
 const client = new MongoClient(uri);
 
 app.get('/', (req, res) => {
-  res.json( 'Dobrodošli na vašu društvenu mrežu!' );
+  res.json( 'Dobrodošli na vašu društvenu mrežu!!' );
 });
 
 async function run(){
